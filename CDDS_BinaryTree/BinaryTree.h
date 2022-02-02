@@ -10,8 +10,8 @@ class BinaryTree
 {
 public:
 
-	BinaryTree();
-	~BinaryTree();
+	BinaryTree() {};
+	~BinaryTree() {};
 
 	/// <summary>
 	/// Returns whether or not there are any nodes in the list
@@ -45,9 +45,97 @@ private:
 	/// <returns>Whether or not a node matching the value could be found</returns>
 	bool findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent);
 
-	void draw(TreeNode<T>*, int x, int y, int horizontalSpacing, TreeNode<T>* selected = nullptr);
+	void draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected = nullptr);
 
 	TreeNode<T>* m_root = nullptr;
 };
 
 #endif
+
+template<typename T>
+inline bool BinaryTree<T>::isEmpty() const
+{
+	if (m_root->getLeft() == nullptr && m_root->getRight() == nullptr)
+		return true;
+	else
+		return false;
+}
+
+template<typename T>
+void BinaryTree<T>::insert(T value)
+{
+	TreeNode<T>* newNode = new TreeNode<T>(value);
+
+	if (newNode < m_root->m_value)
+	{
+		if (m_root->getLeft() == nullptr)
+		{
+			newNode = m_root->m_left;
+		}
+		else
+		{
+			m_root->m_left() = m_root->m_left->getLeft();
+		}
+
+		/*if (newNode < m_root->getLeft())
+		{
+			insert(newNode);
+		}*/
+	}
+	else
+		newNode = m_root->m_left;
+
+	if (newNode > m_root && m_root->hasRight)
+	{
+		if (newNode > m_root->getRight())
+		{
+			insert(newNode);
+		}
+	}
+	else
+		newNode = m_root->m_right;
+}
+
+template<typename T>
+inline void BinaryTree<T>::remove(T value)
+{
+	if ()
+}
+
+template<typename T>
+inline void BinaryTree<T>::draw(TreeNode<T>* selected)
+{
+
+}
+
+template<typename T>
+inline void BinaryTree<T>::draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected)
+{
+	//Decrese the horizontal space as the nodes draw
+	horizontalSpacing /= 2;
+
+	//Check if the current node is null
+	if (currentNode)
+	{
+		//Draws the left child if this node has one
+		if (currentNode->hasLeft())
+		{
+			//Draws a line between the left child and the current node
+			DrawLine(x, y, x - horizontalSpacing, y + 80, RED);
+			//Draws the left child
+			draw(currentNode->getLeft(), x - horizontalSpacing, y + 80, horizontalSpacing, selected);
+		}
+
+		//Draws the right child if this node has one
+		if (currentNode->hasRight())
+		{
+			//Draws a line between this child and the current node
+			DrawLine(x, y, x + horizontalSpacing, y + 80, RED);
+			//Draws the right child
+			draw(currentNode->getRight(), x + horizontalSpacing, y + 80, horizontalSpacing, selected);
+		}
+
+		//Draws the current node
+		currentNode->draw(x, y, (selected == currentNode));
+	}
+}
