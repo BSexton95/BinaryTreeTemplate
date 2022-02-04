@@ -16,24 +16,24 @@ public:
 	/// <summary>
 	/// Returns whether or not there are any nodes in the list
 	/// </summary>
-	bool isEmpty() {} const;
+	bool isEmpty() const;
 	/// <summary>
 	/// Creates a new node that stores the given value and places it into the tree
 	/// </summary>
 	/// <param name="value">The new value to add to the tree</param>
-	void insert(T value) {};
+	void insert(T value);
 	/// <summary>
 	/// Finds the node with the given value and removes it from the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for in the tree</param>
-	void remove(T value) {};
+	void remove(T value);
 	/// <summary>
 	/// Finds and returns a node with the given value in the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for</param>
 	TreeNode<T>* find(T value) {return nullptr;}
 
-	void draw(TreeNode<T>* selected = nullptr) {}
+	void draw(TreeNode<T>* selected = nullptr);
 
 private:
 	/// <summary>
@@ -65,47 +65,50 @@ template<typename T>
 void BinaryTree<T>::insert(T value)
 {
 	TreeNode<T>* newNode = new TreeNode<T>(value);
+	
+	
 
-	if (newNode < m_root->m_value)
+	if (m_root == nullptr)
 	{
-		if (m_root->getLeft() == nullptr)
+		m_root = newNode;
+	}
+	else if (newNode->getData() < m_root->getData())
+	{
+		TreeNode<T>* tempNode = m_root;
+
+		if (tempNode->getLeft() != nullptr)
 		{
-			newNode = m_root->m_left;
+			tempNode = tempNode->getLeft();
+			insert(newNode->getData());
 		}
 		else
 		{
-			m_root->m_left() = m_root->m_left->getLeft();
+			tempNode->setLeft(newNode);
 		}
-
-		/*if (newNode < m_root->getLeft())
-		{
-			insert(newNode);
-		}*/
 	}
-	else
-		newNode = m_root->m_left;
-
-	if (newNode > m_root && m_root->hasRight)
+	/*else if (newNode->getData() > tempNode->getData())
 	{
-		if (newNode > m_root->getRight())
+		if (tempNode->getRight() != nullptr)
 		{
-			insert(newNode);
+			insert(newNode->getData());
 		}
-	}
-	else
-		newNode = m_root->m_right;
+		else
+		{
+			tempNode->setRight(newNode);
+		}
+	}*/
 }
 
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
 {
-	if ()
+	
 }
 
 template<typename T>
 inline void BinaryTree<T>::draw(TreeNode<T>* selected)
 {
-
+	draw(m_root, 400, 40, 400, selected);
 }
 
 template<typename T>

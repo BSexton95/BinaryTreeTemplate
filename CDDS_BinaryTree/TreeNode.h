@@ -98,19 +98,19 @@ inline TreeNode<T>* TreeNode<T>::getRight()
 template<typename T>
 inline void TreeNode<T>::setData(T value)
 {
-	value = m_value;
+	m_value = value;
 }
 
 template<typename T>
 inline void TreeNode<T>::setLeft(TreeNode<T>* node)
 {
-	node = m_left;
+	m_left = node;
 }
 
 template<typename T>
 inline void TreeNode<T>::setRight(TreeNode<T>* node)
 {
-	node = m_right;
+	m_right = node;
 }
 
 template<typename T>
