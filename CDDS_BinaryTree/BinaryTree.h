@@ -64,39 +64,62 @@ inline bool BinaryTree<T>::isEmpty() const
 template<typename T>
 void BinaryTree<T>::insert(T value)
 {
+	bool nodeInserted = false;
+	//Create a new node
 	TreeNode<T>* newNode = new TreeNode<T>(value);
+	//Create a temporary node that is set to be the root
+	TreeNode<T>* tempNode = m_root;
 	
-	
-
+	//If the root is null...
 	if (m_root == nullptr)
 	{
+		//...set the root to be the new node
 		m_root = newNode;
+		//set node inserted to be true
+		nodeInserted = true;
 	}
-	else if (newNode->getData() < m_root->getData())
-	{
-		TreeNode<T>* tempNode = m_root;
 
-		if (tempNode->getLeft() != nullptr)
+	//Loops while the node inserted is false
+	while (nodeInserted != true)
+	{
+		//If the value of the new node is less than the value of the temporary node...
+		if (newNode->getData() < tempNode->getData())
 		{
-			tempNode = tempNode->getLeft();
-			insert(newNode->getData());
+			//...Check to see if the left node is null or not
+			//If the left of the temperary node is not null...
+			if (tempNode->getLeft() != nullptr)
+			{
+				//...go to the next left
+				tempNode = tempNode->getLeft();
+
+			}
+			//Otherwise insert the new node in the empty spot
+			//and set node inserted to be true
+			else
+			{
+				tempNode->setLeft(newNode);
+				nodeInserted = true;
+			}
 		}
-		else
+		//Otherwise if the value of the new node is greater than the value of the temporary node...
+		else if (newNode->getData() > tempNode->getData())
 		{
-			tempNode->setLeft(newNode);
+			//...Check to see if the right node is null or not
+			//If the right of the temporary node is not null...
+			if (tempNode->getRight() != nullptr)
+			{
+				//...go to the next right
+				tempNode = tempNode->getRight();
+			}
+			//Otherwise insert the new node in the empty spot
+			//and set node inserted to be true
+			else
+			{
+				tempNode->setRight(newNode);
+				nodeInserted = true;
+			}
 		}
 	}
-	/*else if (newNode->getData() > tempNode->getData())
-	{
-		if (tempNode->getRight() != nullptr)
-		{
-			insert(newNode->getData());
-		}
-		else
-		{
-			tempNode->setRight(newNode);
-		}
-	}*/
 }
 
 template<typename T>
