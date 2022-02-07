@@ -127,20 +127,31 @@ void BinaryTree<T>::remove(T value)
 {
 	bool nodeRemoved = false;
 
-	TreeNode<T>* currentNode = new TreeNode<T>();
+	TreeNode<T>* nodeToRemove = new TreeNode<T>(value);
 	TreeNode<T>* parentNode = new TreeNode<T>();
-	currentNode = m_root;
 	
+
+	if (!findNode(value, nodeToRemove, parentNode))
+		return;
 
 	while (nodeRemoved != true)
 	{
-		if (currentNode->getData() == value)
+		if (nodeToRemove->getData() == value)
 		{
-			findNode(value, currentNode, parentNode);
-			delete currentNode;
+			if (nodeToRemove->hasLeft())
+			{
+				parentNode->setLeft(nodeToRemove->getLeft());
+			}
+			
+			if (nodeToRemove->hasRight())
+			{
+				parentNode->setRight(nodeToRemove->getRight());
+			}
+
+			delete nodeToRemove;
 			nodeRemoved = true;
 		}
-		else if (currentNode->getData() < value)
+		/*else if (currentNode->getData() < value)
 		{
 			if (currentNode->hasRight())
 			{
@@ -157,7 +168,7 @@ void BinaryTree<T>::remove(T value)
 				else
 					currentNode = currentNode->getLeft();
 			}
-		}
+		}*/
 	}
 }
 
@@ -232,9 +243,10 @@ bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>
 		{
 			nodeParent = nodeFound;
 		}
+		return true;
 	}
 
-	return true;
+	
 }
 
 template<typename T>
