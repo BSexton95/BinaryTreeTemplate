@@ -129,47 +129,90 @@ void BinaryTree<T>::remove(T value)
 
 	TreeNode<T>* nodeToRemove = new TreeNode<T>(value);
 	TreeNode<T>* parentNode = new TreeNode<T>();
+	TreeNode<T>* currentNode = m_root;
 	
 
 	if (!findNode(value, nodeToRemove, parentNode))
 		return;
 
-	while (nodeRemoved != true)
-	{
-		if (nodeToRemove->getData() == value)
-		{
-			if (nodeToRemove->hasLeft())
-			{
-				parentNode->setLeft(nodeToRemove->getLeft());
-			}
-			
-			if (nodeToRemove->hasRight())
-			{
-				parentNode->setRight(nodeToRemove->getRight());
-			}
+	if (currentNode == nullptr)
+		return;
 
-			delete nodeToRemove;
-			nodeRemoved = true;
-		}
-		/*else if (currentNode->getData() < value)
-		{
-			if (currentNode->hasRight())
-			{
-				
-					currentNode = currentNode->getRight();
-			}
-		}
-		else if (currentNode->getData() > value)
-		{
-			if (currentNode->hasLeft())
-			{
-				if (currentNode->getData() == value)
-					delete currentNode;
-				else
-					currentNode = currentNode->getLeft();
-			}
-		}*/
+	if (currentNode->getData() > value)
+	{
+		currentNode->getLeft() = remove(currentNode->getData());
 	}
+
+	///*while (nodeRemoved != true)
+	//{
+	//	if (nodeToRemove->getData() == value)
+	//	{
+	//		if (nodeToRemove->hasLeft())
+	//		{
+	//			
+	//			if (nodeToRemove->getLeft()->getData() > parentNode->getData())
+	//				parentNode->setLeft(nodeToRemove->getLeft());
+	//			else
+	//				parentNode->setLeft(nullptr);
+	//		}
+
+	//		if (nodeToRemove->hasRight())
+	//		{
+	//			if (nodeToRemove->getRight()->getData() < parentNode->getData())
+	//				parentNode->setRight(nodeToRemove->getRight());
+	//			else
+	//				parentNode->setRight(nullptr);
+	//		}*/
+
+	//		/*if (nodeToRemove->hasLeft())
+	//		{
+	//			parentNode->setLeft(nodeToRemove->getLeft());
+	//		}
+	//		else
+	//		{
+	//			if (parentNode->getData() != root->getData())
+	//				parentNode->setLeft(nullptr);
+	//		}
+
+	//		if (nodeToRemove->hasRight())
+	//		{
+	//			parentNode->setRight(nodeToRemove->getRight());
+	//		}
+	//		else
+	//		{
+	//			if (parentNode->getData() != root->getData())
+	//				parentNode->setRight(nullptr);
+	//		}*/
+
+	//		/*delete nodeToRemove;
+	//		nodeRemoved = true;*/
+	//	//}
+	//	/*else if (nodeToRemove->getData() < value)
+	//	{
+	//		if (nodeToRemove->hasRight())
+	//		{
+	//			parentNode->setRight(nodeToRemove->getRight());
+	//		}
+
+	//		if (nodeToRemove->hasLeft())
+	//		{
+	//			parentNode->setLeft(nodeToRemove->getLeft());
+	//		}
+	//	}
+	//	else if (nodeToRemove->getData() > value)
+	//	{
+	//		if (nodeToRemove->hasLeft())
+	//		{
+	//			parentNode->setLeft(nodeToRemove->getLeft());
+	//		}
+
+	//		if (nodeToRemove->hasRight())
+	//		{
+	//			parentNode->setRight(nodeToRemove->getRight());
+	//		}
+	//	}*/
+	//	
+	////}
 }
 
 template<typename T>
@@ -229,6 +272,7 @@ bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>
 			{
 				nodeParent = nodeFound;
 				nodeFound = nodeFound->getRight();
+				
 			}
 		}
 		else if (nodeFound->getData() > searchValue)
@@ -237,13 +281,15 @@ bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>
 			{
 				nodeParent = nodeFound;
 				nodeFound = nodeFound->getLeft();
+				
 			}
 		}
 		else if (nodeFound->getData() == searchValue)
 		{
-			nodeParent = nodeFound;
+			
+			return true;
 		}
-		return true;
+		
 	}
 
 	
