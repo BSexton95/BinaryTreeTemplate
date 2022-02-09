@@ -135,9 +135,18 @@ void BinaryTree<T>::remove(T value)
 	if (!findNode(value, nodeToRemove, parentNode))
 		return;
 
+	
+
 	//If the node to remove doesn't have a left or a right node...
 	if (!nodeToRemove->hasLeft() && !nodeToRemove->getRight())
 	{
+		if (m_root->getData() == value)
+		{
+			delete m_root;
+			m_root = nullptr;
+			return;
+		}
+
 		//...delete the node
 		delete nodeToRemove;
 		//If the node to removes parent left is the node to remove...
@@ -147,10 +156,18 @@ void BinaryTree<T>::remove(T value)
 		//Otherwise set the parents right to be null
 		else
 			parentNode->setRight(nullptr);
+
+		
 	}
 	//If the node to remove has a left and doesn't have a right...
 	else if (nodeToRemove->hasLeft() && !nodeToRemove->hasRight())
 	{
+		if (m_root->getData() == value)
+		{
+			m_root = m_root->getLeft();
+			m_root->setLeft(nullptr);
+			return;
+		}
 		//If the node to removes parents left node is the node to remove...
 		if (parentNode->getLeft() != nodeToRemove)
 			//...set the parents right node to be the node to removes left node
@@ -165,6 +182,12 @@ void BinaryTree<T>::remove(T value)
 	//If the node to be removed doesn't have a left and has a right
 	else if (!nodeToRemove->hasLeft() && nodeToRemove->hasRight())
 	{
+		if (m_root->getData() == value)
+		{
+			m_root = m_root->getRight();
+			m_root->setRight(nullptr);
+			return;
+		}
 		//If the parent node of the node to be removed right is the node to be removed...
 		if (parentNode->getRight() != nodeToRemove)
 			//...set the parent nodes left to be the node to removes right
