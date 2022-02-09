@@ -125,95 +125,102 @@ void BinaryTree<T>::insert(T value)
 template<typename T>
 void BinaryTree<T>::remove(T value)
 {
-	bool nodeRemoved = false;
+	//bool nodeRemoved = false;
 
 	TreeNode<T>* nodeToRemove = new TreeNode<T>(value);
 	TreeNode<T>* parentNode = new TreeNode<T>();
-	TreeNode<T>* currentNode = m_root;
-	
 
 	if (!findNode(value, nodeToRemove, parentNode))
 		return;
 
-	if (currentNode == nullptr)
-		return;
-
-	if (currentNode->getData() > value)
+	if (!nodeToRemove->hasLeft() && !nodeToRemove->getRight())
 	{
-		currentNode->getLeft() = remove(currentNode->getData());
+		delete nodeToRemove;
+		if (parentNode->getLeft() == nodeToRemove)
+			parentNode->setLeft(nullptr);
+		else
+			parentNode->setRight(nullptr);
 	}
+	else if (nodeToRemove->hasLeft() && !nodeToRemove->hasRight())
+	{
+		if (parentNode->getLeft() != nodeToRemove)
+			parentNode->setRight(nodeToRemove->getLeft());
+		else
+			parentNode->setLeft(nodeToRemove->getLeft());
+		
+		delete nodeToRemove;
+	}
+	else if (!nodeToRemove->hasLeft() && nodeToRemove->hasRight())
+	{
+		if (parentNode->getRight() != nodeToRemove)
+			parentNode->setLeft(nodeToRemove->getRight());
+		else
+			parentNode->setRight(nodeToRemove->getRight());
 
-	///*while (nodeRemoved != true)
-	//{
-	//	if (nodeToRemove->getData() == value)
-	//	{
-	//		if (nodeToRemove->hasLeft())
-	//		{
-	//			
-	//			if (nodeToRemove->getLeft()->getData() > parentNode->getData())
-	//				parentNode->setLeft(nodeToRemove->getLeft());
-	//			else
-	//				parentNode->setLeft(nullptr);
-	//		}
+		delete nodeToRemove;
+	}
+	else if (nodeToRemove->hasLeft() && nodeToRemove->hasRight())
+	{
+		TreeNode<T>* currentNode = nodeToRemove->getRight();
+		bool furthestRightsLeft = false;
 
-	//		if (nodeToRemove->hasRight())
-	//		{
-	//			if (nodeToRemove->getRight()->getData() < parentNode->getData())
-	//				parentNode->setRight(nodeToRemove->getRight());
-	//			else
-	//				parentNode->setRight(nullptr);
-	//		}*/
+		while (!furthestRightsLeft)
+		{
+			if (currentNode->hasLeft())
+			{
+				parentNode = currentNode;
+				if (currentNode->getLeft()->hasLeft())
+				{
+					currentNode = currentNode->getLeft();
+				}
+			}
+			else
+			{
+				nodeToRemove->setData(currentNode->getData());
+				delete currentNode;
 
-	//		/*if (nodeToRemove->hasLeft())
-	//		{
-	//			parentNode->setLeft(nodeToRemove->getLeft());
-	//		}
-	//		else
-	//		{
-	//			if (parentNode->getData() != root->getData())
-	//				parentNode->setLeft(nullptr);
-	//		}
+				if (!nodeToRemove->getRight()->hasLeft())
+					nodeToRemove->setRight(nullptr);
+				else
+					nodeToRemove->setLeft(nullptr);
 
-	//		if (nodeToRemove->hasRight())
-	//		{
-	//			parentNode->setRight(nodeToRemove->getRight());
-	//		}
-	//		else
-	//		{
-	//			if (parentNode->getData() != root->getData())
-	//				parentNode->setRight(nullptr);
-	//		}*/
-
-	//		/*delete nodeToRemove;
-	//		nodeRemoved = true;*/
-	//	//}
-	//	/*else if (nodeToRemove->getData() < value)
-	//	{
-	//		if (nodeToRemove->hasRight())
-	//		{
-	//			parentNode->setRight(nodeToRemove->getRight());
-	//		}
-
-	//		if (nodeToRemove->hasLeft())
-	//		{
-	//			parentNode->setLeft(nodeToRemove->getLeft());
-	//		}
-	//	}
-	//	else if (nodeToRemove->getData() > value)
-	//	{
-	//		if (nodeToRemove->hasLeft())
-	//		{
-	//			parentNode->setLeft(nodeToRemove->getLeft());
-	//		}
-
-	//		if (nodeToRemove->hasRight())
-	//		{
-	//			parentNode->setRight(nodeToRemove->getRight());
-	//		}
-	//	}*/
-	//	
-	////}
+				furthestRightsLeft = true;
+			}
+		}
+		
+		
+	}
 }
+	//while (nodeRemoved != true)
+	//{
+	//	
+	////	/*else if (nodeToRemove->getData() < value)
+	////	{
+	////		if (nodeToRemove->hasRight())
+	////		{
+	////			parentNode->setRight(nodeToRemove->getRight());
+	////		}
+
+	////		if (nodeToRemove->hasLeft())
+	////		{
+	////			parentNode->setLeft(nodeToRemove->getLeft());
+	////		}
+	////	}
+	////	else if (nodeToRemove->getData() > value)
+	////	{
+	////		if (nodeToRemove->hasLeft())
+	////		{
+	////			parentNode->setLeft(nodeToRemove->getLeft());
+	////		}
+
+	////		if (nodeToRemove->hasRight())
+	////		{
+	////			parentNode->setRight(nodeToRemove->getRight());
+	////		}
+	////	}*/
+	////	
+	//}
+
 
 template<typename T>
 TreeNode<T>* BinaryTree<T>::find(T value)
