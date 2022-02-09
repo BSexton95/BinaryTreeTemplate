@@ -125,101 +125,118 @@ void BinaryTree<T>::insert(T value)
 template<typename T>
 void BinaryTree<T>::remove(T value)
 {
-	//bool nodeRemoved = false;
-
+	//Create a node that will be the node to remove
 	TreeNode<T>* nodeToRemove = new TreeNode<T>(value);
+	//Create a node that keeps track of the parent node
 	TreeNode<T>* parentNode = new TreeNode<T>();
 
+	//Finds the node to removes parent node
+	//If the value can't be find it will break return
 	if (!findNode(value, nodeToRemove, parentNode))
 		return;
 
+	//If the node to remove doesn't have a left or a right node...
 	if (!nodeToRemove->hasLeft() && !nodeToRemove->getRight())
 	{
+		//...delete the node
 		delete nodeToRemove;
+		//If the node to removes parent left is the node to remove...
 		if (parentNode->getLeft() == nodeToRemove)
+			//...set the parents left to be null
 			parentNode->setLeft(nullptr);
+		//Otherwise set the parents right to be null
 		else
 			parentNode->setRight(nullptr);
 	}
+	//If the node to remove has a left and doesn't have a right...
 	else if (nodeToRemove->hasLeft() && !nodeToRemove->hasRight())
 	{
+		//If the node to removes parents left node is the node to remove...
 		if (parentNode->getLeft() != nodeToRemove)
+			//...set the parents right node to be the node to removes left node
 			parentNode->setRight(nodeToRemove->getLeft());
+		//Otherwise set the parents left node to be the node to removes left node
 		else
 			parentNode->setLeft(nodeToRemove->getLeft());
 		
+		//Delete the node to be removed
 		delete nodeToRemove;
 	}
+	//If the node to be removed doesn't have a left and has a right
 	else if (!nodeToRemove->hasLeft() && nodeToRemove->hasRight())
 	{
+		//If the parent node of the node to be removed right is the node to be removed...
 		if (parentNode->getRight() != nodeToRemove)
+			//...set the parent nodes left to be the node to removes right
 			parentNode->setLeft(nodeToRemove->getRight());
+		//Otherwise set the parent nodes right to be the node to be removeds right
 		else
 			parentNode->setRight(nodeToRemove->getRight());
 
+		//Delete the node to be removed
 		delete nodeToRemove;
 	}
+	//If the node to be removed has a left and a right...
 	else if (nodeToRemove->hasLeft() && nodeToRemove->hasRight())
 	{
+		//Create a current node that is se to be the node to be removeds right node
 		TreeNode<T>* currentNode = nodeToRemove->getRight();
+		//Set the parent node to be the current node
+		parentNode = currentNode;
+		//Create a boolean that will be true when you reach the furthes right nodes left
 		bool furthestRightsLeft = false;
 
-		while (!furthestRightsLeft)
+		//If the current node has a left...
+		if (currentNode->hasLeft())
 		{
-			if (currentNode->hasLeft())
+			//Loop until the furthest rights left is reached
+			while (!furthestRightsLeft)
 			{
-				parentNode = currentNode;
-				if (currentNode->getLeft()->hasLeft())
+				//IF the parents left node has a left...
+				if (parentNode->getLeft()->hasLeft())
 				{
-					currentNode = currentNode->getLeft();
+					//...set the parent node to be it's left
+					parentNode = parentNode->getLeft();
+				}
+				//Otherwise....
+				else
+				{
+					//...set the current node to be the parent nodes left
+					currentNode = parentNode->getLeft();
+
+					//set the boolean to be true
+					furthestRightsLeft = true;
 				}
 			}
+			//set the data of the node to be removed to be the data of the current node
+			nodeToRemove->setData(currentNode->getData());
+			//set the left of the parents node to be the current nodes right
+			parentNode->setLeft(currentNode->getRight());
+			//Delete the current node
+			delete currentNode;
+		}
+		//Otherwise...
+		else
+		{
+			//...set the node to be removeds data to be the current nodes data
+			nodeToRemove->setData(currentNode->getData());
+
+			//If the node to be removeds right node has a right node...
+			if (nodeToRemove->getRight()->hasRight())
+			{
+				//...set the node to be reomveds right to be the current nodes right
+				nodeToRemove->setRight(currentNode->getRight());
+			}
+			//Otherwise set the node to be removeds right to be null
 			else
 			{
-				nodeToRemove->setData(currentNode->getData());
-				delete currentNode;
-
-				if (!nodeToRemove->getRight()->hasLeft())
-					nodeToRemove->setRight(nullptr);
-				else
-					nodeToRemove->setLeft(nullptr);
-
-				furthestRightsLeft = true;
+				nodeToRemove->setRight(nullptr);
 			}
+			//Delete the current node
+			delete currentNode;
 		}
-		
-		
 	}
 }
-	//while (nodeRemoved != true)
-	//{
-	//	
-	////	/*else if (nodeToRemove->getData() < value)
-	////	{
-	////		if (nodeToRemove->hasRight())
-	////		{
-	////			parentNode->setRight(nodeToRemove->getRight());
-	////		}
-
-	////		if (nodeToRemove->hasLeft())
-	////		{
-	////			parentNode->setLeft(nodeToRemove->getLeft());
-	////		}
-	////	}
-	////	else if (nodeToRemove->getData() > value)
-	////	{
-	////		if (nodeToRemove->hasLeft())
-	////		{
-	////			parentNode->setLeft(nodeToRemove->getLeft());
-	////		}
-
-	////		if (nodeToRemove->hasRight())
-	////		{
-	////			parentNode->setRight(nodeToRemove->getRight());
-	////		}
-	////	}*/
-	////	
-	//}
 
 
 template<typename T>
