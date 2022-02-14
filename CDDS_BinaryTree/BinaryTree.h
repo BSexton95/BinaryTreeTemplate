@@ -119,6 +119,8 @@ void BinaryTree<T>::insert(T value)
 				nodeInserted = true;
 			}
 		}
+		else if (value == tempNode->getData())
+			return;
 	}
 }
 
