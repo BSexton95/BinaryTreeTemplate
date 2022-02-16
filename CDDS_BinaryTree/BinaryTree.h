@@ -9,7 +9,9 @@ template<typename T>
 class BinaryTree
 {
 public:
-
+	/// <summary>
+	/// Constructor for the binary tree
+	/// </summary>
 	BinaryTree() {};
 	~BinaryTree() {};
 
