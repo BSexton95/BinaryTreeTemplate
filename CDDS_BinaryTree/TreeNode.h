@@ -4,8 +4,19 @@ template<typename T>
 class TreeNode
 {
 public:
+	/// <summary>
+	/// Constructor for tree node
+	/// </summary>
 	TreeNode() {};
+	/// <summary>
+	/// Constructor for tree node that holds a value
+	/// </summary>
+	/// <param name="value">value the tree node holds</param>
 	TreeNode(T value) { m_value = value; }
+
+	/// <summary>
+	/// Deconstructor for the tree node
+	/// </summary>
 	~TreeNode() {};
 
 	/// <summary>
@@ -50,6 +61,9 @@ public:
 	/// <param name="node">The node to set as this nodes new child</param>
 	void setRight(TreeNode<T>* node);
 
+	/// <summary>
+	/// Draws the nodes on the tree
+	/// </summary>
 	void draw(int x, int y, bool selected = false);
 
 private:
