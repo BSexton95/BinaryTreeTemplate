@@ -13,28 +13,39 @@ public:
 	/// Constructor for the binary tree
 	/// </summary>
 	BinaryTree() {};
+
+	/// <summary>
+	/// Deconstructor for the binary tree
+	/// </summary>
 	~BinaryTree() {};
 
 	/// <summary>
 	/// Returns whether or not there are any nodes in the list
 	/// </summary>
 	bool isEmpty() const;
+
 	/// <summary>
 	/// Creates a new node that stores the given value and places it into the tree
 	/// </summary>
 	/// <param name="value">The new value to add to the tree</param>
 	void insert(T value);
+
 	/// <summary>
 	/// Finds the node with the given value and removes it from the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for in the tree</param>
 	void remove(T value);
+
 	/// <summary>
 	/// Finds and returns a node with the given value in the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for</param>
 	TreeNode<T>* find(T value);
 
+	/// <summary>
+	/// Calls the private draw function for the placement the node.
+	/// </summary>
+	/// <param name="selected">The node to be placed</param>
 	void draw(TreeNode<T>* selected = nullptr);
 
 private:
@@ -47,6 +58,14 @@ private:
 	/// <returns>Whether or not a node matching the value could be found</returns>
 	bool findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent);
 
+	/// <summary>
+	/// Creates the spacing of the branches and the nodes
+	/// </summary>
+	/// <param name="currentNode">The node to inserte from</param>
+	/// <param name="x">The x position</param>
+	/// <param name="y">The y position</param>
+	/// <param name="horizontalSpacing">The space between a node and a branch</param>
+	/// <param name="selected">The node to be placed</param>
 	void draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected = nullptr);
 
 	TreeNode<T>* m_root = nullptr;
@@ -57,8 +76,11 @@ private:
 template<typename T>
 bool BinaryTree<T>::isEmpty() const
 {
+	//If the left or the right node of the root is null...
 	if (m_root->getLeft() == nullptr && m_root->getRight() == nullptr)
+		//...The tree is empty
 		return true;
+	//Otherwise there is something in the tree
 	else
 		return false;
 }
@@ -144,8 +166,10 @@ void BinaryTree<T>::remove(T value)
 	//If the node to remove doesn't have a left or a right node...
 	if (!nodeToRemove->hasLeft() && !nodeToRemove->getRight())
 	{
+		//If value is root is the value to bee romoved...
 		if (m_root->getData() == value)
 		{
+			//...delete the root, set it to null, and exit the function
 			delete m_root;
 			m_root = nullptr;
 			return;
@@ -166,10 +190,14 @@ void BinaryTree<T>::remove(T value)
 	//If the node to remove has a left and doesn't have a right...
 	else if (nodeToRemove->hasLeft() && !nodeToRemove->hasRight())
 	{
+		//If the value to remove is the root...
 		if (m_root->getData() == value)
 		{
+			//...Set the root to be it's left node
 			m_root = m_root->getLeft();
+			//Set the roots left to be null
 			m_root->setLeft(nullptr);
+			//exit the function
 			return;
 		}
 		//If the node to removes parents left node is the node to remove...
@@ -186,10 +214,14 @@ void BinaryTree<T>::remove(T value)
 	//If the node to be removed doesn't have a left and has a right
 	else if (!nodeToRemove->hasLeft() && nodeToRemove->hasRight())
 	{
+		//If value is the root...
 		if (m_root->getData() == value)
 		{
+			//...set the root to be the the right node
 			m_root = m_root->getRight();
+			//set the roots right to be null
 			m_root->setRight(nullptr);
+			//exit the function
 			return;
 		}
 		//If the parent node of the node to be removed right is the node to be removed...
@@ -311,33 +343,45 @@ void BinaryTree<T>::draw(TreeNode<T>* selected)
 template<typename T>
 bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent)
 {
+	//Create a boolean that keeps track if the node was found
 	bool foundNode = false;
+	
+	//Set both the node found and the parent node to be the root
 	nodeFound = m_root;
 	nodeParent = m_root;
 
+	//Loop while the node has not been found
 	while (foundNode != true)
 	{
+		//If the node to be founds data is less than the value to be searched for...
 		if (nodeFound->getData() < searchValue)
 		{
+			//and if the node to be found has a right node...
 			if (nodeFound->hasRight())
 			{
+				//...set the parent node to be the node found
 				nodeParent = nodeFound;
+				//and set the node found the be the node founds right.
 				nodeFound = nodeFound->getRight();
-				
 			}
 		}
+		//If the node founds data is greater than the value to be searche for...
 		else if (nodeFound->getData() > searchValue)
 		{
+			//and if the node to be found has a left node...
 			if (nodeFound->hasLeft())
 			{
+				//...set the parent node to be the node found
 				nodeParent = nodeFound;
+				//set the node found to be its left
 				nodeFound = nodeFound->getLeft();
 				
 			}
 		}
+		//If the node to be founds data is equal to the value being searched for...
 		else if (nodeFound->getData() == searchValue)
 		{
-			
+			//...return true
 			return true;
 		}
 		
